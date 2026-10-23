@@ -211,6 +211,7 @@
   .rev-block { background: #1a1220; border: 1px solid #4a2a3a; border-radius: 8px; padding: 10px 12px; }
   .rev-block strong { color: #ff9db5; }
   .rev-block p { margin-top: 4px; }
+  .report-item .cheer-up { margin-top: 6px; color: #f7e7a9; }
   .rev-block .cheer { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #4a2a3a; color: #f7e7a9; }
   .rev-block .lbl { color: var(--gold-light); font-size: .8rem; margin-right: 4px; }
   .stats-line { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #3a4566; }
@@ -665,6 +666,88 @@ const cardReversed = {
               cheer: "你的成就值得驕傲。讓財富服務你的人生，而不是反過來。" }
 };
 
+// 正位時給你的一句話
+const cardUprightCheer = {
+  major_0: "帶著好奇心出發吧，每一步都是新的風景。",
+  major_1: "你手上已經有需要的一切，相信自己，開始動手。",
+  major_2: "你的直覺很準，給它一點安靜，它會告訴你答案。",
+  major_3: "你正在孕育美好的事物，慢慢來，它會開花的。",
+  major_4: "你有能力為自己建立穩定的世界，一步一步來。",
+  major_5: "向值得學習的人請教，你會走得更穩、更遠。",
+  major_6: "跟著心走，你會做出讓自己無悔的選擇。",
+  major_7: "方向清楚了，就勇敢前進，勝利屬於堅持的人。",
+  major_8: "溫柔地對待自己的害怕，你會發現自己其實很勇敢。",
+  major_9: "給自己一段安靜的時間，你會找到心裡的那盞燈。",
+  major_10: "好運正在轉向你，準備好迎接新的機會吧。",
+  major_11: "做對的事，結果會證明你是對的。",
+  major_12: "暫停不是浪費，換個角度，你會看見新的可能。",
+  major_13: "舊的篇章結束了，新的故事正要開始。",
+  major_14: "你找到平衡的速度剛剛好，繼續保持這個節奏。",
+  major_15: "看清楚讓你上癮的東西，你就已經握有選擇權。",
+  major_16: "改變來得突然，但它會帶你到更真實的地方。",
+  major_17: "希望就在前方閃閃發亮，你值得所有美好。",
+  major_18: "不確定的時候，慢慢走也沒關係，月光會陪你。",
+  major_19: "盡情享受此刻的溫暖，你值得這份快樂。",
+  major_20: "這是你重新開始的時刻，聽見內心的呼喚吧。",
+  major_21: "你已經完成了好重要的一段旅程，為自己喝采！",
+  fire_ace: "一個新的點子正在燃起，抓住它，勇敢開始。",
+  fire_two: "世界很大，你的計畫值得被實現。",
+  fire_three: "你的努力正在遠方發芽，好消息就要回來了。",
+  fire_four: "停下來慶祝一下，你走到這裡真的很不容易。",
+  fire_five: "不同的聲音能讓你更成長，帶著好奇心面對。",
+  fire_six: "你的努力被看見了，好好享受這份肯定。",
+  fire_seven: "站穩你的立場，你比你以為的更有力量。",
+  fire_eight: "事情開始加速了，跟著節奏往前衝吧。",
+  fire_nine: "再撐一下就到了，你已經走過最難的路。",
+  fire_ten: "你很努力，也記得找人分擔，你不是一個人。",
+  fire_kitten: "對世界保持好奇，新的冒險正在敲門。",
+  fire_tomcat: "你的熱情很有感染力，勇敢去追吧。",
+  fire_queen: "你的自信和溫暖，會照亮身邊的每一個人。",
+  fire_king: "你有帶領大家的能力，相信自己的遠見。",
+  sea_ace: "敞開心，新的愛與感動正在流向你。",
+  sea_two: "真心的連結很珍貴，好好珍惜彼此。",
+  sea_three: "和喜歡的人一起慶祝，快樂會加倍。",
+  sea_four: "抬起頭看看，生活裡還有很多值得珍惜的禮物。",
+  sea_five: "難過是正常的，但別忘了，你還擁有很多。",
+  sea_six: "那些溫暖的回憶，會一直陪伴你往前走。",
+  sea_seven: "夢想很多是好事，挑一個最心動的去實現。",
+  sea_eight: "勇敢離開不適合的地方，是為了找到更好的自己。",
+  sea_nine: "你的願望正在實現，好好享受這份滿足。",
+  sea_ten: "幸福就在身邊，好好感受被愛的感覺。",
+  sea_kitten: "你的細膩和想像力是珍貴的天賦，好好發揮它。",
+  sea_tomcat: "跟著心裡的浪漫走，美好的事會來找你。",
+  sea_queen: "你的溫柔有療癒的力量，也記得溫柔對待自己。",
+  sea_king: "你能穩住情緒，也能照顧別人，這是很棒的成熟。",
+  sky_ace: "你的頭腦很清楚，相信你看見的真相。",
+  sky_two: "給自己一點時間，答案會在安靜中浮現。",
+  sky_three: "心痛代表你真心在乎過，它會慢慢變成力量。",
+  sky_four: "好好休息，你會帶著更清楚的腦袋回來。",
+  sky_five: "有時候退一步，才是真正的勝利。",
+  sky_six: "你正在往更平靜的地方前進，一切會越來越好。",
+  sky_seven: "聰明是你的武器，用它來保護自己也保護別人。",
+  sky_eight: "困住你的只是暫時的，你一定找得到出口。",
+  sky_nine: "擔心的事大多不會發生，你比你想像的更安全。",
+  sky_ten: "最難的已經結束了，天正要亮起來。",
+  sky_kitten: "保持好奇與警覺，你學東西的速度會讓自己驚喜。",
+  sky_tomcat: "你的行動力很強，帶著方向衝，會很驚人。",
+  sky_queen: "你的清醒和誠實，是別人最珍惜的禮物。",
+  sky_king: "用你的智慧做決定，你會做出公正又漂亮的判斷。",
+  earth_ace: "一個實實在在的好機會出現了，好好把握。",
+  earth_two: "你很會調整平衡，記得也留一點時間給自己玩。",
+  earth_three: "和對的人合作，你們會做出很棒的成果。",
+  earth_four: "你懂得守住重要的東西，這是安全感的開始。",
+  earth_five: "冬天總會過去，溫暖的門一直都為你開著。",
+  earth_six: "分享讓你更富足，付出的善意都會回到你身上。",
+  earth_seven: "耐心等待，你種下的都在悄悄長大。",
+  earth_eight: "每一次的練習都算數，你正在變得更厲害。",
+  earth_nine: "你靠自己創造了舒服的生活，為自己驕傲吧。",
+  earth_ten: "你正在為自己和家人打造長久的幸福。",
+  earth_kitten: "認真學習的你，正在為未來打下好基礎。",
+  earth_tomcat: "一步一步穩穩走，你會到達想去的地方。",
+  earth_queen: "你把生活照顧得很好，也記得好好照顧自己。",
+  earth_king: "你努力累積的一切，正在變成穩穩的豐盛。"
+};
+
 // 牌面圖檔放在 images/，用到才下載
 const cardImages = Object.fromEntries(cardDeck.map(c => [c.id, `images/${c.id}.jpg`]));
 
@@ -956,6 +1039,7 @@ function renderAnalysisReport() {
           <div class="report-item">
             <strong>⚡ 核心實務解讀${item.reversed ? "（正位）" : ""}：</strong>
             <p>${card.core}</p>
+            ${item.reversed ? "" : `<p class="cheer-up">🌱 ${cardUprightCheer[card.id]}</p>`}
           </div>
           ${item.reversed ? `<div class="report-item rev-block">
             <strong>🔄 逆位解讀：</strong>
@@ -1059,6 +1143,7 @@ function copyFullReadingToAI() {
     formattedText += `・看圖重點：${item.card.symbols.map(x => x.s + "＝" + x.m).join("；")}\n`;
     formattedText += `・問自己：${item.card.question}\n`;
     formattedText += `・核心解讀：${item.card.core}\n`;
+    if (!item.reversed) formattedText += `・給你的一句話：${cardUprightCheer[item.card.id]}\n`;
     if (item.reversed) {
       formattedText += `・逆位（傳統）：${cardReversed[item.card.id].classic}\n`;
       formattedText += `・逆位（白話）：${cardReversed[item.card.id].modern}\n`;
