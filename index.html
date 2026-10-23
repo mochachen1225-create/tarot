@@ -228,6 +228,8 @@
   details.q-tips ul { margin: 6px 0 0 18px; }
   details.q-tips li { margin-bottom: 6px; }
   details.q-tips .eg { background: #141926; border-radius: 6px; padding: 4px 10px; margin-top: 4px; font-size: .82rem; color: var(--text-secondary); }
+  .copy-note { font-size: .85rem; color: var(--text-secondary); line-height: 1.7; background: #0d111d; border-left: 3px solid var(--gold); border-radius: 8px; padding: 10px 14px; margin: -6px 0 20px; }
+  .copy-note b { color: var(--gold-light); }
   footer.credit { margin-top: 40px; font-size: .8rem; color: var(--text-secondary); text-align: center; }
   .card-caption { margin-top: 10px; text-align: center; min-height: 40px; opacity: 0; transition: opacity .4s; }
   .card-caption.show { opacity: 1; }
@@ -514,8 +516,12 @@
       <button class="copy-btn" onclick="copyFullReadingToAI()">
         <span>🤖</span> 請 AI 詳解 (複製全部結果)
       </button>
-      <span class="copy-toast" id="copyToast">已複製到剪貼簿！</span>
+      <span class="copy-toast" id="copyToast">已複製！貼到 AI 對話框就可以開始囉</span>
     </div>
+  </div>
+  <div class="copy-note">
+    🤖 <b>想聽更深入的解讀？</b>按上方的「請 AI 詳解」按鈕，就會一鍵複製這次的問題、牌陣、每張牌和所有解讀。<br>
+    打開你平常用的 AI（例如 ChatGPT、Claude、Gemini），貼上送出，就能請它幫你詳細解牌，還可以繼續追問、聊得更深入。
   </div>
 
   <div id="cardsAnalysisList"></div>
