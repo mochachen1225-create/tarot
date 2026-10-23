@@ -214,8 +214,20 @@
   .report-item .cheer-up { margin-top: 6px; color: #f7e7a9; }
   .rev-block .cheer { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #4a2a3a; color: #f7e7a9; }
   .rev-block .lbl { color: var(--gold-light); font-size: .8rem; margin-right: 4px; }
+  .ponder { margin-top: 10px; color: #cfd6ea; }
   .stats-line { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #3a4566; }
   .stats-line ul { margin: 6px 0 0 18px; }
+  .btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .btn-note { font-size: .78rem; color: var(--text-secondary); }
+  details.q-tips { font-size: .85rem; color: #ccd2e3; line-height: 1.6; }
+  details.q-tips summary { cursor: pointer; color: var(--text-secondary); font-size: .82rem; }
+  details.q-tips summary:hover { color: var(--gold-light); }
+  details.q-tips[open] { background: #0d111d; border: 1px dashed #3a4566; border-radius: 10px; padding: 10px 14px; }
+  details.q-tips[open] summary { color: var(--gold-light); margin-bottom: 6px; }
+  details.q-tips b { color: var(--gold-light); }
+  details.q-tips ul { margin: 6px 0 0 18px; }
+  details.q-tips li { margin-bottom: 6px; }
+  details.q-tips .eg { background: #141926; border-radius: 6px; padding: 4px 10px; margin-top: 4px; font-size: .82rem; color: var(--text-secondary); }
   footer.credit { margin-top: 40px; font-size: .8rem; color: var(--text-secondary); text-align: center; }
   .card-caption { margin-top: 10px; text-align: center; min-height: 40px; opacity: 0; transition: opacity .4s; }
   .card-caption.show { opacity: 1; }
@@ -433,6 +445,18 @@
     <div class="input-group">
       <label for="questionInput">🎯 設定你的提問目標：</label>
       <input type="text" id="questionInput" placeholder="寫下你想問的問題">
+      <details class="q-tips">
+        <summary>🤔 不知道怎麼問？點開看看</summary>
+        <p>塔羅不太擅長回答「會不會」「是不是」，比較擅長幫你<b>看清楚狀況、找到方向</b>。試著這樣問：</p>
+        <ul>
+          <li><b>用「怎麼」「什麼」開頭</b>
+            <div class="eg">✗ 他會不會回來？<br>✓ 在這段關係裡，我真正需要的是什麼？</div>
+            <div class="eg">✗ 我會不會升職？<br>✓ 我可以怎麼做，讓自己在工作上更有發揮？</div></li>
+          <li><b>把焦點放在自己</b>：問「我可以怎麼做」，而不是「別人會怎樣」。你能改變的，只有自己。</li>
+          <li><b>一次問一件事</b>：問題越具體，牌越好讀。</li>
+          <li><b>加上時間範圍</b>也很好，例如「接下來三個月，我該把力氣放在哪裡？」</li>
+        </ul>
+      </details>
     </div>
   </div>
 
@@ -449,12 +473,15 @@
 
   <div class="btn-row">
     <div class="deck-count-badge">🃏 牌庫容量：完整 78 張標準全套卡牌</div>
-    <button class="action-btn" onclick="executeSpread()">洗牌並開展牌陣</button>
+    <div class="btn-wrap">
+      <button class="action-btn" onclick="executeSpread()">洗牌並開展牌陣</button>
+      <div class="btn-note">洗好牌後，請一張一張點開牌卡 👆</div>
+    </div>
   </div>
 </div>
 
 <div class="spread-stage" id="spreadStage"></div>
-<div class="flip-hint" id="flipHint">👆 點牌翻開</div>
+<div class="flip-hint" id="flipHint">👆 請點開每一張牌卡</div>
 <div class="lightbox" id="lightbox" onclick="closeLightbox()"><img id="lightboxImg" alt=""></div>
 
 <div class="think-box" id="thinkBox">
@@ -493,7 +520,7 @@
 
   <div id="cardsAnalysisList"></div>
   <div class="overall-summary" id="overallSummaryBox">
-    <h3>💡 牌陣綜合洞察總結</h3>
+    <h3>💡 把牌串起來看</h3>
     <div id="overallSummaryText"></div>
   </div>
 </div>
@@ -1060,29 +1087,59 @@ function renderAnalysisReport() {
   document.getElementById("analysisBoard").style.display = "block";
 }
 
+function cardPhrase(item) {
+  const key = item.card.core.split(/[、，。；]/)[0];
+  const name = `<em>${item.card.nameTw}</em>`;
+  return item.reversed
+    ? `${name}（逆位）——「${key}」的能量有點卡住，或還在往內收`
+    : `${name}，帶著「${key}」的能量`;
+}
+
 function generateOverallSummary(spreadKey, data) {
-  if (spreadKey === "dual_track") {
-    const cardA = data[0].card;
-    const cardB = data[1].card;
-    return `<strong>【雙軌對照格局】</strong>：「選項 A」抽到 <em>${cardA.nameTw}</em>，「選項 B」抽到 <em>${cardB.nameTw}</em>。<br>
-    兩張牌不是「哪條路會成功」的機率，而是兩條路各自的課題與成本。對照上方兩張牌的核心解讀，問問自己：哪一種代價是你比較願意承擔的？`;
-  } else if (spreadKey === "triangle") {
-    return `<strong>【時間流動態】</strong>：過去 <em>${data[0].card.nameTw}</em> → 現在 <em>${data[1].card.nameTw}</em> → 未來 <em>${data[2].card.nameTw}</em>。<br>
-    試著用一句話把三張牌串成一個故事：「因為……，所以現在……，如果照這樣走下去，會……」。`;
+  const q = document.getElementById("questionInput").value.trim();
+  const safeQ = q.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const open = q ? `關於「${safeQ}」，` : "";
+  const P = (i) => cardPhrase(data[i]);
+  const ask = (t) => `<div class="ponder">💭 ${t}</div>`;
+
+  if (spreadKey === "triangle") {
+    return `${open}三張牌像一個正在展開的故事：<br>
+    回頭看，過去是 ${P(0)}；<br>
+    此刻的你，正處在 ${P(1)}；<br>
+    往前看，如果照現在的方向走，可能會遇見 ${P(2)}。` +
+    ask(`試著用自己的話說一次：「因為過去……，所以我現在……，如果繼續這樣，會……」。未來那張不是判決，而是提醒你：現在的選擇，會帶你走到哪裡。`);
+  } else if (spreadKey === "dual_track") {
+    return `${open}兩條路各自的風景是這樣的：<br>
+    選 A，是 ${P(0)}；<br>
+    選 B，是 ${P(1)}。` +
+    ask(`牌不會告訴你哪條路「會成功」，它只是讓你看見每條路的樣子和代價。讀到哪一張時，你的心比較輕鬆？哪一種代價，是你比較願意承擔的？`);
   } else if (spreadKey === "relationship") {
-    return `<strong>【關係對照】</strong>：我 <em>${data[0].card.nameTw}</em> ／ 對方 <em>${data[1].card.nameTw}</em> → 關係 <em>${data[2].card.nameTw}</em>。<br>
-    把前兩張牌並排看：兩個人物的姿態是面對彼此、背對彼此，還是各忙各的？再看第三張，問自己：「這段關係現在需要的是什麼？」`;
+    return `${open}這段關係的三個面向：<br>
+    你，是 ${P(0)}；<br>
+    對方，是 ${P(1)}；<br>
+    而你們之間，是 ${P(2)}。` +
+    ask(`把前兩張並排看：兩個人物是面對彼此、背對彼此，還是各忙各的？你眼中的對方，和對方真正的樣子，不一定完全一樣。最後問問自己：這段關係現在最需要的是什麼？`);
   } else if (spreadKey === "cross") {
-    return `<strong>【十字推演】</strong>：現況 <em>${data[0].card.nameTw}</em> ／ 阻礙 <em>${data[1].card.nameTw}</em> ／ 根源 <em>${data[2].card.nameTw}</em> → 建議 <em>${data[3].card.nameTw}</em> → 結果 <em>${data[4].card.nameTw}</em>。<br>
-    試著串成一句話：「現在是……，卡住我的是……，其實是因為……，所以我可以……，那麼會……」。`;
+    return `${open}牌一層一層地往下說：<br>
+    現在的狀況，是 ${P(0)}；<br>
+    擋在前面的，是 ${P(1)}；<br>
+    藏在底下的根源，是 ${P(2)}；<br>
+    牌給你的建議，是 ${P(3)}；<br>
+    照著去做，事情可能走向 ${P(4)}。` +
+    ask(`特別看看「根源」和「建議」這兩張：問題常常不在表面那件事上，而解法也常常比想像中簡單。有沒有一件今天就能開始的小事？`);
   } else if (spreadKey === "problem_solver") {
-    return `<strong>【策略破局圖譜】</strong>：阻礙 <em>${data[0].card.nameTw}</em> → 對策 <em>${data[1].card.nameTw}</em> → 收穫 <em>${data[2].card.nameTw}</em>。<br>
-    試著把三張串起來：「卡住我的是……，我可以……，做了之後會……」。也看看三張牌的人物姿態、花色是否有共同點。`;
+    return `${open}牌陣這樣回應你：<br>
+    真正卡住你的，是 ${P(0)}；<br>
+    能幫你突破的，是 ${P(1)}；<br>
+    做了之後，可能迎來 ${P(2)}。` +
+    ask(`看看三張牌的人物姿態、花色有沒有共同點。「對策」那張牌裡的人在做什麼？你可以怎麼把那個動作，用在自己的生活裡？`);
   } else if (spreadKey === "custom") {
-    const chain = data.map(d => `${d.slot.focus} → <em>${d.card.nameTw}</em>`).join("<br>");
-    return `<strong>【自訂牌陣】</strong><br>${chain}<br>每張先各自想三句話，再試著把它們串成一個故事。`;
+    const lines = data.map((d, i) => `「${d.slot.focus}」<br>　→ ${P(i)}`).join("；<br>");
+    return `${open}每個小問題，牌都給了一個方向：<br>${lines}。` +
+    ask(`先一張一張想，再試著把它們串成一個故事。哪一張讓你最有感覺？通常那就是最想對你說話的那一張。`);
   } else {
-    return `<strong>【核心直觀指引】</strong>：此單張牌 <em>${data[0].card.nameTw}</em> 正映照出當下最重要的心理狀態與核心焦點，請回顧其畫面象徵帶給你的直覺啟發。`;
+    return `${open}這次抽到的是 ${P(0)}。` +
+    ask(`這張牌不是預言，比較像一面鏡子，照出你此刻最需要看見的東西。盯著畫面看一會兒：最先吸引你目光的是什麼？那個細節，也許就是答案。`);
   }
 }
 
@@ -1097,7 +1154,7 @@ function generateStats(data) {
   const n = data.length;
   if (n < 2) {
     return data[0].reversed
-      ? `<div class="stats-line">🔄 這張牌是逆位：能量可能卡住、往內收，或還沒準備好表現出來。先讀正位，再對照下方的逆位解讀。</div>`
+      ? `<div class="stats-line">🔄 這張牌是逆位：能量可能卡住、往內收，或還沒準備好表現出來。先讀正位，再對照上方的逆位解讀。</div>`
       : "";
   }
   const notes = [];
@@ -1124,7 +1181,7 @@ function generateStats(data) {
   else if (revs * 2 > n) notes.push(`逆位有 ${revs} / ${n} 張：能量偏向卡住或往內收，有些事需要先放慢、回頭檢視。`);
   else notes.push(`逆位有 ${revs} / ${n} 張：大致順暢，逆位那張是需要多留意的地方。`);
 
-  return `<div class="stats-line"><strong>📊 牌面統計</strong><ul>${notes.map(x => `<li>${x}</li>`).join("")}</ul></div>`;
+  return `<div class="stats-line"><strong>🔎 從整組牌看見的小線索</strong><ul>${notes.map(x => `<li>${x}</li>`).join("")}</ul></div>`;
 }
 
 function copyFullReadingToAI() {
@@ -1153,7 +1210,7 @@ function copyFullReadingToAI() {
   });
 
   const summaryRaw = document.getElementById("overallSummaryText").innerText;
-  formattedText += `--- 系統初判總結 ---\n${summaryRaw}\n\n`;
+  formattedText += `--- 把牌串起來看 ---\n${summaryRaw}\n\n`;
   formattedText += `請 AI 顧問以客觀、務實且具深度的角度，針對我的問題進行更深層的綜合剖析（請把正逆位一併考慮進去）！`;
 
   navigator.clipboard.writeText(formattedText).then(() => {
